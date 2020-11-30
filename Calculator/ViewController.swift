@@ -77,25 +77,28 @@ class ViewController: UIViewController {
             holder.addSubview(button3)
             button3.addTarget(self, action: #selector(numberPressed(_ :)), for: .touchUpInside)
         }
-        let topButtons = ["C","±","%"]
-        for x in 0..<3{
-            let buttonTop = UIButton(frame: CGRect(x:buttonSize*CGFloat(x),y: holder.frame.size.height-(buttonSize*5),width: buttonSize,height: buttonSize))
-            buttonTop.setTitleColor(.black,for: .normal)
-            buttonTop.backgroundColor = .white
-            buttonTop.setTitle(topButtons[x],for: .normal)
-            buttonTop.tag = x + 3
-            holder.addSubview(buttonTop)
-            buttonTop.addTarget(self, action: #selector(topPressed(_ :)), for: .touchUpInside)
-            
-            
-        }
 
         
-        //        let clearButton = UIButton(frame: CGRect(x:0,y: holder.frame.size.height-(buttonSize*5),width: view.frame.size.width,height: buttonSize))
-//        clearButton.setTitleColor(.black,for: .normal)
-//        clearButton.backgroundColor = .white
-//        clearButton.setTitle("Clear All",for: .normal)
-//        holder.addSubview(clearButton)
+                let clearButton = UIButton(frame: CGRect(x:0,y: holder.frame.size.height-(buttonSize*5),width: buttonSize,height: buttonSize))
+        clearButton.setTitleColor(.black,for: .normal)
+        clearButton.backgroundColor = .white
+        clearButton.setTitle("Clear All",for: .normal)
+        holder.addSubview(clearButton)
+        clearButton.addTarget(self, action: #selector(clearResult), for: .touchUpInside)
+        
+        let changeNumSign = UIButton(frame: CGRect(x:100,y: holder.frame.size.height-(buttonSize*5),width: buttonSize,height: buttonSize))
+        changeNumSign.setTitleColor(.black,for: .normal)
+        changeNumSign.backgroundColor = .white
+        changeNumSign.setTitle("±",for: .normal)
+        holder.addSubview(changeNumSign)
+        changeNumSign.addTarget(self, action: #selector(changeSign), for: .touchUpInside)
+        
+        let changeNumToPercent = UIButton(frame: CGRect(x:200,y: holder.frame.size.height-(buttonSize*5),width: (buttonSize*1.25),height: buttonSize))
+        changeNumToPercent.setTitleColor(.black,for: .normal)
+        changeNumToPercent.backgroundColor = .white
+        changeNumToPercent.setTitle("%",for: .normal)
+        holder.addSubview(changeNumToPercent)
+        changeNumToPercent.addTarget(self, action: #selector(changeToPercent), for: .touchUpInside)
         
         let operations = ["=","+","-","x","÷"]
         for x in 0..<5{
@@ -114,30 +117,25 @@ class ViewController: UIViewController {
     }
     @objc func clearResult(){
         resultLabel.text = "0"
-        
+        currentOperations = nil
+        firstNumber = 0
+
     }
-    @objc func topPressed(_ sender: UIButton){
-        let tag = sender.tag - 1
-        if let sign = currentSign{
-            switch sign{
-            case .clear:
-            resultLabel.text = "0"
-            currentOperations = nil
-            firstNumber = 0
-            break
-            
-            case .negative:
-            break
-            
-            case .positive:
-            break
-            
-            case .percent:
-            break
-            
-            }
+    @objc func changeSign(){
+        if let text = resultLabel.text, var value = Int(text){
+            firstNumber = value
+            value = value * -1
+            resultLabel.text =  String(value)
         }
     }
+    @objc func changeToPercent(){
+        if let text = resultLabel.text, var value = Float(text){
+            firstNumber = Int(value)
+            value = Float(value / 100)
+            resultLabel.text = String(value)
+        }
+    }
+
     @objc func numberPressed(_ sender: UIButton){
         let tag = sender.tag-1
         
