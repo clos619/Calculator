@@ -43,7 +43,7 @@ class ViewController: UIViewController {
     }
     private func setupNumberPad(){
         let buttonSize: CGFloat = view.frame.size.width / 4
-        let zeroButton = UIButton(frame: CGRect(x:0,y: holder.frame.size.height-buttonSize,width: buttonSize*3,height: buttonSize))
+        let zeroButton = UIButton(frame: CGRect(x:0,y: holder.frame.size.height-buttonSize,width: (buttonSize*2),height: buttonSize))
         zeroButton.setTitleColor(.black,for: .normal)
         zeroButton.backgroundColor = .white
         zeroButton.setTitle("0",for: .normal)
@@ -82,9 +82,10 @@ class ViewController: UIViewController {
                 let clearButton = UIButton(frame: CGRect(x:0,y: holder.frame.size.height-(buttonSize*5),width: buttonSize,height: buttonSize))
         clearButton.setTitleColor(.black,for: .normal)
         clearButton.backgroundColor = .white
-        clearButton.setTitle("Clear All",for: .normal)
+        clearButton.setTitle("C",for: .normal)
         holder.addSubview(clearButton)
         clearButton.addTarget(self, action: #selector(clearResult), for: .touchUpInside)
+
         
         let changeNumSign = UIButton(frame: CGRect(x:100,y: holder.frame.size.height-(buttonSize*5),width: buttonSize,height: buttonSize))
         changeNumSign.setTitleColor(.black,for: .normal)
@@ -99,6 +100,13 @@ class ViewController: UIViewController {
         changeNumToPercent.setTitle("%",for: .normal)
         holder.addSubview(changeNumToPercent)
         changeNumToPercent.addTarget(self, action: #selector(changeToPercent), for: .touchUpInside)
+        
+        let decimalButton = UIButton(frame: CGRect(x:200,y: holder.frame.size.height-buttonSize,width: (buttonSize*1.25),height: buttonSize))
+        decimalButton.setTitleColor(.black,for: .normal)
+        decimalButton.backgroundColor = .white
+        decimalButton.setTitle(".",for: .normal)
+        holder.addSubview(decimalButton)
+        decimalButton.addTarget(self, action: #selector(decimal), for: .touchUpInside)
         
         let operations = ["=","+","-","x","÷"]
         for x in 0..<5{
@@ -133,6 +141,14 @@ class ViewController: UIViewController {
             firstNumber = Int(value)
             value = Float(value / 100)
             resultLabel.text = String(value)
+        }
+    }
+    @objc func decimal(){
+        if let text = resultLabel.text, var value = Float(text){
+            firstNumber = Int(value)
+            value = Float(value)
+            resultLabel.text = String(value)
+            
         }
     }
 
